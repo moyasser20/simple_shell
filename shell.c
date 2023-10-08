@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <sys/types.h>
+#include "shell.h"
 /**
  * main - prints prompt and waits for user to enter command
  * Return: 0 on success, -1 on failure
