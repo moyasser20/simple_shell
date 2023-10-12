@@ -17,7 +17,6 @@ int main(void)
         int status = 2;
         char *cmd = NULL;
         char *cmdPath = NULL;
-        char binPath[] = "/usr/bin/";
         char *argVec[] = {NULL};
         char *envVec[] = {""};
         char *cmd_copy = NULL;
@@ -33,7 +32,6 @@ int main(void)
 
         // print prompt
         printf("#cisfun$ ");
-        // printf("Flag Test: before getline()\n"); //////////////////////////////////////////////
 
         // get command from user
         cmd_len = getline(&cmd, &n, stdin);
@@ -43,10 +41,9 @@ int main(void)
             perror("getline");
             return (-1);
         }
-        // check if getline failed
+
         if (cmd_len > 1)
         {
-            // printf("Flag Test: after cmd\n"); //////////////////////////////////////////////
 
             // duplicate cmd
             cmd_copy = strdup(cmd);
@@ -83,43 +80,38 @@ int main(void)
             }
             // set last element of argv to NULL
             argv[i] = NULL;
-            // printf("Flag Test: after argv\n"); //////////////////////////////////////////////
 
             // compare argv[0] to exit
             comp = strcmp(argv[0], "exit");
-            // printf("comp = %d\n", comp);       //////////////////////////////////////////////
-            // printf("argv[0] = %s\n", argv[0]); //////////////////////////////////////////////
             if (comp == 0)
             {
-                exit(0);
-                // printf("Flag test: performed exit"); //////////////////////////////////////////////
                 //  free memory
                 free(cmd_copy);
                 free(argv);
                 free(cmdPath);
                 free(cmdPath_copy);
+                free(cmd);
+                // exit program
+                // exit(0);
+                return (-1);
             }
             else if (comp != 0)
             {
                 // fork process
-                    // printf("Flag Test: before fork\n"); //////////////////////////////////////////////
 
                 pid = fork();
 
                 if (pid == 0)
                 {
-                    // allocate memory for cmdPath
-                    // printf("Flag Test: child process\n"); //////////////////////////////////////////////
-                    cmdPath = malloc(sizeof(char) * (strlen(binPath) + strlen(argv[0]) + 1));
-                    // check if malloc failed
+
+                    cmdPath = _getCommandPath(argv[0]);
+                    // check if cmdPath is NULL
                     if (cmdPath == NULL)
                     {
-                        perror("malloc");
+                        perror("cmdPath");
                         return (-1);
                     }
-                    // get path of command
-                    cmdPath = _getpath(binPath, argv);
-                    // printf("Flag Test: after getting path\n"); //////////////////////////////////////////////
+
 
                     // duplicate cmdPath
                     cmdPath_copy = strdup(cmdPath);
@@ -136,7 +128,6 @@ int main(void)
                     }
                     // set last element of argVec to NULL
                     argVec[i] = NULL;
-                    // printf("Flag Test: before execve\n"); //////////////////////////////////////////////
 
                     // execute command
                     if (execve(cmdPath_copy, argVec, envVec) == -1)
@@ -144,39 +135,39 @@ int main(void)
                         if (argVec[0] != "NULL")
                         {
                             perror("execve");
-                            // printf("Bad Command\n");
+                            printf("Bad Command\n");
                         }
-                        exit(0);
+                        // exit(0);
+                        return (-1);
                     }
 
-                    // printf("Flag Test: after execve\n"); //////////////////////////////////////////////
                 }
 
                 // parent process
                 else if (pid > 0)
                 {
-                    // printf("Flag Test: just started parent\n"); //////////////////////////////////////////////
 
                     // wait for child process to terminate
                     wait(NULL);
-                    //   printf("Flag Test: back to parent process\n"); //////////////////////////////////////////////
+                    
                 }
                 // check if fork failed
                 else
                 {
                     perror("fork");
-                    exit(1);
+                    return (-1);
                 }
+
                 // free memory
                 free(cmd_copy);
                 free(argv);
-                free(cmdPath);
+                // free(cmdPath);
                 free(cmdPath_copy);
 
-
-                // printf("Flag Test: memory free is ok\n"); //////////////////////////////////////////////
+                printf("Memory free checkpoint\n"); //////////////////////////////////////////////
             }
         }
+        free(cmd);
     }
     return (0);
 }
