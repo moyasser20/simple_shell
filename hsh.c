@@ -32,7 +32,6 @@ int main(void)
 
         // print prompt
         printf("#cisfun$ ");
-
         // get command from user
         cmd_len = getline(&cmd, &n, stdin);
         // check if getline failed
@@ -41,10 +40,8 @@ int main(void)
             perror("getline");
             return (-1);
         }
-
         if (cmd_len > 1)
         {
-
             // duplicate cmd
             cmd_copy = strdup(cmd);
             // check if cmd_copy is NULL
@@ -80,7 +77,6 @@ int main(void)
             }
             // set last element of argv to NULL
             argv[i] = NULL;
-
             // compare argv[0] to exit
             comp = strcmp(argv[0], "exit");
             if (comp == 0)
@@ -91,28 +87,23 @@ int main(void)
                 free(cmdPath);
                 free(cmdPath_copy);
                 free(cmd);
-                // exit program
-                // exit(0);
                 return (-1);
             }
             else if (comp != 0)
             {
                 // fork process
-
                 pid = fork();
-
                 if (pid == 0)
                 {
-
                     cmdPath = _getCommandPath(argv[0]);
                     // check if cmdPath is NULL
                     if (cmdPath == NULL)
                     {
                         perror("cmdPath");
+                        free(argv);
+                        free(cmd);
                         return (-1);
                     }
-
-
                     // duplicate cmdPath
                     cmdPath_copy = strdup(cmdPath);
                     // check if cmdPath_copy is NULL
@@ -126,30 +117,26 @@ int main(void)
                     {
                         argVec[i] = argv[i];
                     }
-                    // set last element of argVec to NULL
                     argVec[i] = NULL;
-
                     // execute command
                     if (execve(cmdPath_copy, argVec, envVec) == -1)
                     {
                         if (argVec[0] != "NULL")
                         {
                             perror("execve");
-                            printf("Bad Command\n");
+                            free(cmdPath_copy);
+                            free(cmd_copy);
+                            free(argv);
+                            free(cmd);
                         }
-                        // exit(0);
                         return (-1);
                     }
-
                 }
-
                 // parent process
                 else if (pid > 0)
                 {
-
                     // wait for child process to terminate
                     wait(NULL);
-                    
                 }
                 // check if fork failed
                 else
@@ -157,14 +144,10 @@ int main(void)
                     perror("fork");
                     return (-1);
                 }
-
                 // free memory
                 free(cmd_copy);
                 free(argv);
-                // free(cmdPath);
                 free(cmdPath_copy);
-
-                printf("Memory free checkpoint\n"); //////////////////////////////////////////////
             }
         }
         free(cmd);

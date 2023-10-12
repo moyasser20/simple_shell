@@ -18,13 +18,8 @@
 #include <errno.h>    // errno
 #include <limits.h>   // PATH_MAX
 
-
-// Defines
-
 // Prototypes
-// char *_getpath(char *binPath, char **argv);
 char *_getCommandPath(char *command);
-
 
 // Function to return the path
 
@@ -72,17 +67,18 @@ char *_getCommandPath(char *command)
         if (command[0] == '/')
         {
             //  printf("command is a path\n");
+            free(path_copy);
             return (command);
         }
         // check if command is a relative path
         else if (command[0] == '.' && command[1] == '/')
         {
             // printf("command is a relative path\n");
+            free(path_copy);
             return (command);
         }
         // tokenize path
         token = strtok(path_copy, delim);
-        // printf("token: %s\n", token);
 
         // loop through path
         while (token)
@@ -93,6 +89,7 @@ char *_getCommandPath(char *command)
             if (cmdPath == NULL)
             {
                 perror("malloc");
+                free(cmdPath);
                 return (NULL);
             }
             cmdPath = strcpy(cmdPath, token);
@@ -113,22 +110,13 @@ char *_getCommandPath(char *command)
             {
                 token = strtok(NULL, delim);
             }
+            free(cmdPath);
         }
-        free(cmdPath);
         free(command);
         free(path_copy);
 
         return (NULL);
     }
 }
-
-
-// Function to print the prompt
-
-// Function to read the command line
-
-// Function to parse the command line
-
-// Function to execute the command
 
 #endif
