@@ -6,7 +6,7 @@
  * Description: prints prompt and waits for user to enter command
  * then executes command
  */
-
+extern char **environ;
 int main(void)
 {
 
@@ -28,7 +28,6 @@ int main(void)
         int i = 0;
         char *cmdPath_copy = NULL;
         int cmd_len = 0;
-        int comp = 10;
 
         // print prompt
         printf("#cisfun$ ");
@@ -77,9 +76,7 @@ int main(void)
             }
             // set last element of argv to NULL
             argv[i] = NULL;
-            // compare argv[0] to exit
-            comp = strcmp(argv[0], "exit");
-            if (comp == 0)
+            if (strcmp(argv[0], "exit") == 0)
             {
                 //  free memory
                 free(cmd_copy);
@@ -87,9 +84,35 @@ int main(void)
                 free(cmdPath);
                 free(cmdPath_copy);
                 free(cmd);
-                return (-1);
+                return (0);
             }
-            else if (comp != 0)
+            else if (strcmp(argv[0], "env") == 0)
+            {
+                // print environment
+                for (i = 0; environ[i]; i++)
+                {
+                    printf("%s\n", environ[i]);
+                }
+                // free memory
+                free(cmd_copy);
+                free(argv);
+                free(cmdPath);
+                free(cmdPath_copy);
+            }
+            else if (strcmp(argv[0], "cd") == 0)
+            {
+                // change directory
+                if (chdir(argv[1]) == -1)
+                {
+                    perror("chdir");
+                }
+                // free memory
+                free(cmd_copy);
+                free(argv);
+                free(cmdPath);
+                free(cmdPath_copy);
+            }
+            else
             {
                 // fork process
                 pid = fork();
@@ -118,6 +141,7 @@ int main(void)
                         argVec[i] = argv[i];
                     }
                     argVec[i] = NULL;
+
                     // execute command
                     if (execve(cmdPath_copy, argVec, envVec) == -1)
                     {
