@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "header.h"
 
 /**
 * strlen1 - return the length of a string
@@ -11,7 +11,7 @@ int strlen1(char *s)
 int i = 0;
 
 while (!s)
-return 0;
+return (0);
 
 while (*s++)
 i++;

@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "header.h"
 
 /**
 * _strncpy - Function that copy string to another like strncpy
@@ -27,7 +27,6 @@ i++
 }
 return (dest);
 }
-#inlcude "main.h"
 
 /**
 * _strcat - Function that concatenates two string
@@ -58,7 +57,6 @@ dest[c + i] = '\0';
 return (dest);
 
 }
-#include "main.h"
 
 /**
  * _strchr - bbe

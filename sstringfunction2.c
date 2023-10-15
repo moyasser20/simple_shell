@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "header.h"
 
 /**
  * _strcpy - copy the string pointed to by src,
@@ -51,7 +51,6 @@ ret[length] = *--str;
 
 return (ret);
 }
-#include "main.h"
 
 /**
 * _puts - prints a stirng, followed by a newline to stdout
@@ -70,7 +69,6 @@ str++;
 }
 putchar('\n');
 }
-#include <unistd.h>
 
 /**
  * _putchar - df
