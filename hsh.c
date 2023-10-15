@@ -1,20 +1,19 @@
 #include "header.h"
 
 /**
- * main - prints prompt and waits for user to enter command
- * Return: 0 on success, -1 on failure
- * Description: prints prompt and waits for user to enter command
- * then executes command
+ * main -The main function of the simple_shell program.
+ *
+ * @argc: The number of arguments passed to the program.
+ * @argv: An array of strings containing the arguments passed to the program.
+ * @envp: An array of strings containing the environment variables.
+ * Return: 0 on success, -1 on failure.
  */
-extern char **environ;
-int main(void)
+int main(int argc, char *argv[], char *envp[])
 {
-
     int count = 1;
     for (; count > 0; count++)
     {
         pid_t pid = 0;
-        int status = 2;
         char *cmd = NULL;
         char *cmdPath = NULL;
         char *argVec[] = {NULL};
@@ -22,18 +21,18 @@ int main(void)
         char *cmd_copy = NULL;
         char *token = NULL;
         char *delim = " \n";
-        int argc = 0;
-        char **argv = NULL;
         size_t n = 0;
         int i = 0;
         char *cmdPath_copy = NULL;
         int cmd_len = 0;
+        argc = 0;
+        argv = NULL;
 
-        // print prompt
+        /*print prompt*/
         printf("#cisfun$ ");
-        // get command from user
+        /*get command from user*/
         cmd_len = getline(&cmd, &n, stdin);
-        // check if getline failed
+        /*check if getline failed*/
         if (cmd_len == -1)
         {
             perror("getline");
@@ -41,44 +40,44 @@ int main(void)
         }
         if (cmd_len > 1)
         {
-            // duplicate cmd
+            /*duplicate cmd*/
             cmd_copy = strdup(cmd);
-            // check if cmd_copy is NULL
+            /*check if cmd_copy is NULL*/
             if (cmd_copy == NULL)
             {
                 perror("strdup");
                 return (-1);
             }
-            // tokenize cmd
+            /*tokenize cmd*/
             token = strtok(cmd, delim);
-            // count number of tokens in cmd
+            /*count number of tokens in cmd*/
             while (token)
             {
                 token = strtok(NULL, delim);
                 argc++;
             }
-            // allocate memory for argv
+            /*allocate memory for argv*/
             argv = malloc(sizeof(char *) * (argc + 1));
-            // check if malloc failed
+            /*check if malloc failed*/
             if (argv == NULL)
             {
                 perror("malloc");
                 return (-1);
             }
-            // tokenize cmd_copy
+            /*tokenize cmd_copy*/
             token = strtok(cmd_copy, delim);
-            // store tokens in argv
+            /*store tokens in argv*/
             while (token)
             {
                 argv[i] = token;
                 token = strtok(NULL, delim);
                 i++;
             }
-            // set last element of argv to NULL
+            /*set last element of argv to NULL*/
             argv[i] = NULL;
             if (strcmp(argv[0], "exit") == 0)
             {
-                //  free memory
+                /*free memory*/
                 free(cmd_copy);
                 free(argv);
                 free(cmdPath);
@@ -88,12 +87,12 @@ int main(void)
             }
             else if (strcmp(argv[0], "env") == 0)
             {
-                // print environment
-                for (i = 0; environ[i]; i++)
+                /*print environment*/
+                for (i = 0; envp[i] != NULL; i++)
                 {
-                    printf("%s\n", environ[i]);
+                    printf("%s\n", envp[i]);
                 }
-                // free memory
+                /*free memory*/
                 free(cmd_copy);
                 free(argv);
                 free(cmdPath);
@@ -101,12 +100,12 @@ int main(void)
             }
             else if (strcmp(argv[0], "cd") == 0)
             {
-                // change directory
+                /*change directory*/
                 if (chdir(argv[1]) == -1)
                 {
                     perror("chdir");
                 }
-                // free memory
+                /*free memory*/
                 free(cmd_copy);
                 free(argv);
                 free(cmdPath);
@@ -114,12 +113,12 @@ int main(void)
             }
             else
             {
-                // fork process
+                /*fork process*/
                 pid = fork();
                 if (pid == 0)
                 {
                     cmdPath = _getCommandPath(argv[0]);
-                    // check if cmdPath is NULL
+                    /*check if cmdPath is NULL*/
                     if (cmdPath == NULL)
                     {
                         perror("cmdPath");
@@ -127,25 +126,24 @@ int main(void)
                         free(cmd);
                         return (-1);
                     }
-                    // duplicate cmdPath
+                    /*duplicate cmdPath*/
                     cmdPath_copy = strdup(cmdPath);
-                    // check if cmdPath_copy is NULL
+                    /*check if cmdPath_copy is NULL*/
                     if (cmdPath_copy == NULL)
                     {
                         perror("strdup");
                         return (-1);
                     }
-                    // copy argv into argVec
+                    /*copy argv into argVec*/
                     for (i = 0; i < argc; i++)
                     {
                         argVec[i] = argv[i];
                     }
                     argVec[i] = NULL;
-
-                    // execute command
+                    /*execute command*/
                     if (execve(cmdPath_copy, argVec, envVec) == -1)
                     {
-                        if (argVec[0] != "NULL")
+                        if ((strcmp(argv[0], "NULL")) == 0)
                         {
                             perror("execve");
                             free(cmdPath_copy);
@@ -156,19 +154,19 @@ int main(void)
                         return (-1);
                     }
                 }
-                // parent process
+                /*parent process*/
                 else if (pid > 0)
                 {
-                    // wait for child process to terminate
+                    /*wait for child process to terminate*/
                     wait(NULL);
                 }
-                // check if fork failed
+                /*check if fork failed*/
                 else
                 {
                     perror("fork");
                     return (-1);
                 }
-                // free memory
+                /*free memory*/
                 free(cmd_copy);
                 free(argv);
                 free(cmdPath_copy);
