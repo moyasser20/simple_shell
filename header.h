@@ -22,6 +22,19 @@
 char *_getCommandPath(char *command);
 void initialiser (void);
 
+
+/* sstringfunction1 */
+int strlen1(char *s);
+int strcmp1(char *s1, char *s2);
+
+/* sstringfunction2 */
+
+char *_strcpy(char *dest, char *src);
+char *strdup_(const char *str);
+ /* sstringfunction3 */
+char *_strchr(char *s, char c);
+char *_strcat(char *dest, char *src, int n);
+
 /*Function to return the path*/
 
 /**

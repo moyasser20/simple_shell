@@ -31,7 +31,7 @@ int main(int argc, char *argv[], char *envp[])
         }
         if (cmd_len > 1)
         {
-            cmd_copy = strdup(cmd);
+            cmd_copy = strdup_(cmd);
             if (cmd_copy == NULL)
             {
                 perror("strdup");
@@ -57,7 +57,7 @@ int main(int argc, char *argv[], char *envp[])
                 i++;
             }
             argv[i] = NULL;
-            if (strcmp(argv[0], "exit") == 0)
+            if (strcmp1(argv[0], "exit") == 0)
             {
                 free(cmd_copy);
                 free(argv);
@@ -66,7 +66,7 @@ int main(int argc, char *argv[], char *envp[])
                 free(cmd);
                 return (0);
             }
-            else if (strcmp(argv[0], "env") == 0)
+            else if (strcmp1(argv[0], "env") == 0)
             {
                 for (i = 0; envp[i] != NULL; i++)
                 {
@@ -77,7 +77,7 @@ int main(int argc, char *argv[], char *envp[])
                 free(cmdPath);
                 free(cmdPath_copy);
             }
-            else if (strcmp(argv[0], "cd") == 0)
+            else if (strcmp1(argv[0], "cd") == 0)
             {
                 if (chdir(argv[1]) == -1)
                 {
@@ -101,7 +101,7 @@ int main(int argc, char *argv[], char *envp[])
                         free(cmd);
                         return (-1);
                     }
-                    cmdPath_copy = strdup(cmdPath);
+                    cmdPath_copy = strdup_(cmdPath);
                     if (cmdPath_copy == NULL)
                     {
                         perror("strdup");

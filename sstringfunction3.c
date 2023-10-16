@@ -23,7 +23,7 @@ dest[i] = src[i];
 while (i < n)
 {
 dest[i] = '\0';
-i++
+i++;
 }
 return (dest);
 }
@@ -48,7 +48,7 @@ while (dest[c])
 {
 c++;
 }
-for (i = 0; i < n && str[i] != '\0'; i++)
+for (i = 0; i < n && src[i] != '\0'; i++)
 {
 dest[c + i] = src[i];
 }
