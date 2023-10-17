@@ -17,6 +17,7 @@
 #include <fcntl.h>    /*open*/
 #include <errno.h>    /*errno*/
 #include <limits.h>   /*PATH_MAX*/
+#include <stdarg.h>   /*va_list*/
 
 /*Prototypes*/
 char *_getCommandPath(char *command);
@@ -42,6 +43,9 @@ int mallocerror(char **argv);
 /*get argc and argv*/
 int getargc(char *cmd, char *delim);
 char **getargv(int argc, char *cmd_copy, char *delim);
+
+/*free*/
+void multiFree(int n, ...);
 
 
 /*struct for intializing variables*/

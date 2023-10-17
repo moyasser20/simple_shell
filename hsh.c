@@ -31,11 +31,7 @@ int main(int argc, char *argv[], char *envp[])
             argv = getargv(argc, v.cmd_copy, v.delim);
             if (strcmp1(argv[0], "exit") == 0)
             {
-                free(v.cmd_copy);
-                free(argv);
-                free(v.cmdPath);
-                free(v.cmdPath_copy);
-                free(v.cmd);
+                multiFree(5, v.cmd_copy, argv, v.cmdPath, v.cmdPath_copy, v.cmd);
                 return (0);
             }
             else if (strcmp1(argv[0], "env") == 0)
