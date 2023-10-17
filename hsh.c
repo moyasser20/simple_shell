@@ -11,36 +11,33 @@ int main(int argc, char *argv[], char *envp[])
     int count = 1;
     for (; count > 0; count++)
     {
-        pid_t pid = 0;
-        char *cmd, *cmdPath, *cmd_copy, *token, *cmdPath_copy = NULL;
+        vars v = INIT_VARS;
+
         char *argVec[] = {NULL};
         char *envVec[] = {""};
-        char *delim = " \n";
-        size_t n = 0;
-        int i = 0;
-        int cmd_len = 0;
+    
         argc = 0;
         argv = NULL;
 
         printf("#cisfun$ ");
-        cmd_len = getline(&cmd, &n, stdin);
-        if (cmd_len == -1)
+        v.cmd_len = getline(&v.cmd, &v.n, stdin);
+        if (v.cmd_len == -1)
         {
             perror("getline");
             return (-1);
         }
-        if (cmd_len > 1)
+        if (v.cmd_len > 1)
         {
-            cmd_copy = strdup_(cmd);
-            if (cmd_copy == NULL)
+            v.cmd_copy = strdup_(v.cmd);
+            if (v.cmd_copy == NULL)
             {
                 perror("strdup");
                 return (-1);
             }
-            token = strtok(cmd, delim);
-            while (token)
+            v.token = strtok(v.cmd, v.delim);
+            while (v.token)
             {
-                token = strtok(NULL, delim);
+                v.token = strtok(NULL, v.delim);
                 argc++;
             }
             argv = malloc(sizeof(char *) * (argc + 1));
@@ -49,33 +46,33 @@ int main(int argc, char *argv[], char *envp[])
                 perror("malloc");
                 return (-1);
             }
-            token = strtok(cmd_copy, delim);
-            while (token)
+            v.token = strtok(v.cmd_copy, v.delim);
+            while (v.token)
             {
-                argv[i] = token;
-                token = strtok(NULL, delim);
-                i++;
+                argv[v.i] = v.token;
+                v.token = strtok(NULL, v.delim);
+                v.i++;
             }
-            argv[i] = NULL;
+            argv[v.i] = NULL;
             if (strcmp1(argv[0], "exit") == 0)
             {
-                free(cmd_copy);
+                free(v.cmd_copy);
                 free(argv);
-                free(cmdPath);
-                free(cmdPath_copy);
-                free(cmd);
+                free(v.cmdPath);
+                free(v.cmdPath_copy);
+                free(v.cmd);
                 return (0);
             }
             else if (strcmp1(argv[0], "env") == 0)
             {
-                for (i = 0; envp[i] != NULL; i++)
+                for (v.i = 0; envp[v.i] != NULL; v.i++)
                 {
-                    printf("%s\n", envp[i]);
+                    printf("%s\n", envp[v.i]);
                 }
-                free(cmd_copy);
+                free(v.cmd_copy);
                 free(argv);
-                free(cmdPath);
-                free(cmdPath_copy);
+                free(v.cmdPath);
+                free(v.cmdPath_copy);
             }
             else if (strcmp1(argv[0], "cd") == 0)
             {
@@ -83,61 +80,61 @@ int main(int argc, char *argv[], char *envp[])
                 {
                     perror("chdir");
                 }
-                free(cmd_copy);
+                free(v.cmd_copy);
                 free(argv);
-                free(cmdPath);
-                free(cmdPath_copy);
+                free(v.cmdPath);
+                free(v.cmdPath_copy);
             }
             else
             {
-                pid = fork();
-                if (pid == 0)
+                v.pid = fork();
+                if (v.pid == 0)
                 {
-                    cmdPath = _getCommandPath(argv[0]);
-                    if (cmdPath == NULL)
+                    v.cmdPath = _getCommandPath(argv[0]);
+                    if (v.cmdPath == NULL)
                     {
                         perror("cmdPath");
                         free(argv);
-                        free(cmd);
+                        free(v.cmd);
                         return (-1);
                     }
-                    cmdPath_copy = strdup_(cmdPath);
-                    if (cmdPath_copy == NULL)
+                    v.cmdPath_copy = strdup_(v.cmdPath);
+                    if (v.cmdPath_copy == NULL)
                     {
                         perror("strdup");
                         return (-1);
                     }
-                    for (i = 0; i < argc; i++)
+                    for (v.i = 0; v.i < argc; v.i++)
                     {
-                        argVec[i] = argv[i];
+                        argVec[v.i] = argv[v.i];
                     }
-                    argVec[i] = NULL;
-                    if (execve(cmdPath_copy, argVec, envVec) == -1)
+                    argVec[v.i] = NULL;
+                    if (execve(v.cmdPath_copy, argVec, envVec) == -1)
                     {
                         if ((strcmp(argv[0], "NULL")) == 0)
                         {
                             perror("execve");
-                            free(cmdPath_copy);
-                            free(cmd_copy);
+                            free(v.cmdPath_copy);
+                            free(v.cmd_copy);
                             free(argv);
-                            free(cmd);
+                            free(v.cmd);
                         }
                         return (-1);
                     }
                 }
-                else if (pid > 0)
+                else if (v.pid > 0)
                     wait(NULL);
                 else
                 {
                     perror("fork");
                     return (-1);
                 }
-                free(cmd_copy);
+                free(v.cmd_copy);
                 free(argv);
-                free(cmdPath_copy);
+                free(v.cmdPath_copy);
             }
         }
-        free(cmd);
+        free(v.cmd);
     }
     return (0);
 }
