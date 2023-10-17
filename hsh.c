@@ -12,17 +12,11 @@ int main(int argc, char *argv[], char *envp[])
     for (; count > 0; count++)
     {
         vars v = INIT_VARS;
-
         char *argVec[] = {NULL};
         char *envVec[] = {""};
-
-        argv = NULL;
-
         printf("#cisfun$ ");
         v.cmd_len = getline(&v.cmd, &v.n, stdin);
-
         getline_error(v.cmd_len);
-
         if (v.cmd_len > 1)
         {
             v.cmd_copy = strdup_(v.cmd);
@@ -30,31 +24,16 @@ int main(int argc, char *argv[], char *envp[])
             argc = getargc(v.cmd, v.delim);
             argv = getargv(argc, v.cmd_copy, v.delim);
             if (strcmp1(argv[0], "exit") == 0)
-            {
-                multiFree(5, v.cmd_copy, argv, v.cmdPath, v.cmdPath_copy, v.cmd);
-                return (0);
-            }
+                exitCase(v.cmd_copy, argv, v.cmdPath, v.cmdPath_copy, v.cmd);
             else if (strcmp1(argv[0], "env") == 0)
-            {
-                for (v.i = 0; envp[v.i] != NULL; v.i++)
-                {
-                    printf("%s\n", envp[v.i]);
-                }
-                free(v.cmd_copy);
-                free(argv);
-                free(v.cmdPath);
-                free(v.cmdPath_copy);
-            }
+                envCase(envp, v.cmd_copy, argv, v.cmdPath, v.cmdPath_copy);
             else if (strcmp1(argv[0], "cd") == 0)
             {
                 if (chdir(argv[1]) == -1)
                 {
                     perror("chdir");
                 }
-                free(v.cmd_copy);
-                free(argv);
-                free(v.cmdPath);
-                free(v.cmdPath_copy);
+                multiFree(4, v.cmd_copy, argv, v.cmdPath, v.cmdPath_copy);
             }
             else
             {
@@ -65,8 +44,7 @@ int main(int argc, char *argv[], char *envp[])
                     if (v.cmdPath == NULL)
                     {
                         perror("cmdPath");
-                        free(argv);
-                        free(v.cmd);
+                        multiFree(2, argv, v.cmd);
                         return (-1);
                     }
                     v.cmdPath_copy = strdup_(v.cmdPath);
@@ -85,10 +63,7 @@ int main(int argc, char *argv[], char *envp[])
                         if ((strcmp(argv[0], "NULL")) == 0)
                         {
                             perror("execve");
-                            free(v.cmdPath_copy);
-                            free(v.cmd_copy);
-                            free(argv);
-                            free(v.cmd);
+                            multiFree(4, v.cmd_copy, argv, v.cmd, v.cmdPath_copy);
                         }
                         return (-1);
                     }
@@ -100,9 +75,7 @@ int main(int argc, char *argv[], char *envp[])
                     perror("fork");
                     return (-1);
                 }
-                free(v.cmd_copy);
-                free(argv);
-                free(v.cmdPath_copy);
+                multiFree(3, v.cmd_copy, argv, v.cmdPath_copy);
             }
         }
         free(v.cmd);

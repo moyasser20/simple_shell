@@ -1,5 +1,11 @@
 #include "header.h"
-// write a function that free multiple variables
+/**
+ * multiFree - frees n number of pointers
+ * @n: the number of pointers to free
+ * Return: void
+ * @...: the pointers to free
+ * Description: frees n number of pointers
+*/
  void multiFree(int n, ...)
  {
      va_list valist;

@@ -47,6 +47,12 @@ char **getargv(int argc, char *cmd_copy, char *delim);
 /*free*/
 void multiFree(int n, ...);
 
+/*exit case*/
+void exitCase(char *cmd_copy, char **argv, char *cmdPath, char *cmdPath_copy, char *cmd);
+
+/*env case*/
+void envCase(char *envp[], char *cmd_copy, char **argv, char *cmdPath, char *cmdPath_copy);
+
 
 /*struct for intializing variables*/
 typedef struct variables
