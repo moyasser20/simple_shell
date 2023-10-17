@@ -12,8 +12,6 @@ int main(int argc, char *argv[], char *envp[])
     for (; count > 0; count++)
     {
         vars v = INIT_VARS;
-        char *argVec[] = {NULL};
-        char *envVec[] = {""};
         printf("#cisfun$ ");
         v.cmd_len = getline(&v.cmd, &v.n, stdin);
         getline_error(v.cmd_len);
@@ -28,53 +26,16 @@ int main(int argc, char *argv[], char *envp[])
             else if (strcmp1(argv[0], "env") == 0)
                 envCase(envp, v.cmd_copy, argv, v.cmdPath, v.cmdPath_copy);
             else if (strcmp1(argv[0], "cd") == 0)
-            {
-                if (chdir(argv[1]) == -1)
-                {
-                    perror("chdir");
-                }
-                multiFree(4, v.cmd_copy, argv, v.cmdPath, v.cmdPath_copy);
-            }
+                chdirCase(argv, v.cmd_copy, v.cmdPath, v.cmdPath_copy);
             else
             {
                 v.pid = fork();
                 if (v.pid == 0)
-                {
-                    v.cmdPath = _getCommandPath(argv[0]);
-                    if (v.cmdPath == NULL)
-                    {
-                        perror("cmdPath");
-                        multiFree(2, argv, v.cmd);
-                        return (-1);
-                    }
-                    v.cmdPath_copy = strdup_(v.cmdPath);
-                    if (v.cmdPath_copy == NULL)
-                    {
-                        perror("strdup");
-                        return (-1);
-                    }
-                    for (v.i = 0; v.i < argc; v.i++)
-                    {
-                        argVec[v.i] = argv[v.i];
-                    }
-                    argVec[v.i] = NULL;
-                    if (execve(v.cmdPath_copy, argVec, envVec) == -1)
-                    {
-                        if ((strcmp(argv[0], "NULL")) == 0)
-                        {
-                            perror("execve");
-                            multiFree(4, v.cmd_copy, argv, v.cmd, v.cmdPath_copy);
-                        }
-                        return (-1);
-                    }
-                }
+                    childProcess(argv, v.cmd, argc, v.cmd_copy);
                 else if (v.pid > 0)
                     wait(NULL);
                 else
-                {
-                    perror("fork");
-                    return (-1);
-                }
+                    forkError();
                 multiFree(3, v.cmd_copy, argv, v.cmdPath_copy);
             }
         }

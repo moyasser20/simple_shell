@@ -31,3 +31,20 @@ void envCase(char *envp[], char *cmd_copy, char **argv, char *cmdPath, char *cmd
     }
     multiFree(4, cmd_copy, argv, cmdPath, cmdPath_copy);
 }
+
+/**
+ * chdirCase - handles the cd command
+ * @argv: an array of arguments passed to the command
+ * @cmd_copy: a copy of the command entered by the user
+ * @argv: an array of arguments passed to the command
+ * @cmdPath: the path of the command
+ * @cmdPath_copy: a copy of the path of the command
+ */
+void chdirCase(char **argv, char *cmd_copy, char *cmdPath, char *cmdPath_copy)
+{
+    if (chdir(argv[1]) == -1)
+    {
+        perror("chdir");
+    }
+    multiFree(4, cmd_copy, argv, cmdPath, cmdPath_copy);
+}

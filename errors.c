@@ -42,3 +42,10 @@ int mallocerror(char **argv)
         return (-1);
     }
 }
+
+// fork error
+int forkError(void)
+{
+    perror("fork");
+    return (-1);
+}

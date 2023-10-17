@@ -38,6 +38,7 @@ char *_strcat(char *dest, char *src, int n);
 int getline_error(int cmd_len);
 int strdup_error(char *cmd_copy);
 int mallocerror(char **argv);
+int forkError(void);
 
 
 /*get argc and argv*/
@@ -52,6 +53,12 @@ void exitCase(char *cmd_copy, char **argv, char *cmdPath, char *cmdPath_copy, ch
 
 /*env case*/
 void envCase(char *envp[], char *cmd_copy, char **argv, char *cmdPath, char *cmdPath_copy);
+
+/*chdir case*/
+void chdirCase(char **argv, char *cmd_copy, char *cmdPath, char *cmdPath_copy);
+
+/*child process*/
+void childProcess(char **argv, char *cmd, int argc, char *cmd_copy);
 
 
 /*struct for intializing variables*/
