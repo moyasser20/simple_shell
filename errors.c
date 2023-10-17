@@ -8,11 +8,12 @@
  */
 int getline_error(int cmd_len)
 {
-    if (cmd_len == -1)
-    {
-        perror("getline");
-        return (-1);
-    }
+if (cmd_len == -1)
+{
+perror("getline");
+return (-1);
+}
+return (0);
 }
 /**
  * strdup_error - Calculates the error code for strdup() function
@@ -22,11 +23,12 @@ int getline_error(int cmd_len)
  */
 int strdup_error(char *cmd_copy)
 {
-    if (cmd_copy == NULL)
-    {
-        perror("strdup");
-        return (-1);
-    }
+if (cmd_copy == NULL)
+{
+perror("strdup");
+return (-1);
+}
+return (0);
 }
 /**
  * mallocerror - Calculates the error code for malloc() function
@@ -36,16 +38,21 @@ int strdup_error(char *cmd_copy)
  */
 int mallocerror(char **argv)
 {
-    if (argv == NULL)
-    {
-        perror("malloc");
-        return (-1);
-    }
+if (argv == NULL)
+{
+perror("malloc");
+return (-1);
+}
+return (0);
 }
 
-// fork error
+/**
+ * forkError - Prints an error message when a fork fails
+ *
+ * Return: Always returns -1
+ */
 int forkError(void)
 {
-    perror("fork");
-    return (-1);
+perror("fork");
+return (-1);
 }
