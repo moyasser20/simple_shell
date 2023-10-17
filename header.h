@@ -33,6 +33,17 @@ char *strdup_(const char *str);
 char *_strchr(char *s, char c);
 char *_strcat(char *dest, char *src, int n);
 
+/*errors*/
+int getline_error(int cmd_len);
+int strdup_error(char *cmd_copy);
+int mallocerror(char **argv);
+
+
+/*get argc and argv*/
+int getargc(char *cmd, char *delim);
+char **getargv(int argc, char *cmd_copy, char *delim);
+
+
 /*struct for intializing variables*/
 typedef struct variables
 {

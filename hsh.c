@@ -15,45 +15,20 @@ int main(int argc, char *argv[], char *envp[])
 
         char *argVec[] = {NULL};
         char *envVec[] = {""};
-    
-        argc = 0;
+
         argv = NULL;
 
         printf("#cisfun$ ");
         v.cmd_len = getline(&v.cmd, &v.n, stdin);
-        if (v.cmd_len == -1)
-        {
-            perror("getline");
-            return (-1);
-        }
+
+        getline_error(v.cmd_len);
+
         if (v.cmd_len > 1)
         {
             v.cmd_copy = strdup_(v.cmd);
-            if (v.cmd_copy == NULL)
-            {
-                perror("strdup");
-                return (-1);
-            }
-            v.token = strtok(v.cmd, v.delim);
-            while (v.token)
-            {
-                v.token = strtok(NULL, v.delim);
-                argc++;
-            }
-            argv = malloc(sizeof(char *) * (argc + 1));
-            if (argv == NULL)
-            {
-                perror("malloc");
-                return (-1);
-            }
-            v.token = strtok(v.cmd_copy, v.delim);
-            while (v.token)
-            {
-                argv[v.i] = v.token;
-                v.token = strtok(NULL, v.delim);
-                v.i++;
-            }
-            argv[v.i] = NULL;
+            strdup_error(v.cmd_copy);
+            argc = getargc(v.cmd, v.delim);
+            argv = getargv(argc, v.cmd_copy, v.delim);
             if (strcmp1(argv[0], "exit") == 0)
             {
                 free(v.cmd_copy);
