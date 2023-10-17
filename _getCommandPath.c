@@ -6,7 +6,7 @@
  * @command: The command to search for.
  *
  * Return: A pointer to a string containing the full path of the command,
- *         or NULL if the command is not found.
+ * or NULL if the command is not found.
  */
 char *_getCommandPath(char *command)
 {
@@ -25,7 +25,7 @@ if (path)
 {
 if (command[0] == '/')
 {
-free(path_copy);
+multiFree(1, path_copy);
 return (command);
 }
 else if (command[0] == '.' && command[1] == '/')

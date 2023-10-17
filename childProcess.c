@@ -28,9 +28,7 @@ perror("strdup");
 exit(0);
 }
 for (i = 0; i < argc; i++)
-{
 argVec[i] = argv[i];
-}
 argVec[i] = NULL;
 if (execve(cmdPath_copy, argVec, envVec) == -1)
 {
