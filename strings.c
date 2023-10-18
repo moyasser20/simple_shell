@@ -20,27 +20,25 @@ for (length++; length--;)
 ret[length] = *--str;
 return (ret);
 }
-/**
- * strcmp1 - compare between two strings
- * @s1: first string
- * @s2: second string
- * Return: negative if s1<s2 , postive if s1>s2
- */
 
-int strcmp1(char *s1, char *s2)
+/**
+ * _strcmp - performs lexicogarphic comparison of two strangs.
+ * @s1: the first strang
+ * @s2: the second strang
+ *
+ * Return: negative if s1 < s2, positive if s1 > s2, zero if s1 == s2
+ */
+int strcmp1(char *str1, char *str2)
 {
-while (*s1 && *s2)
-{
-if (*s1 != *s2)
-return (*s1 - *s2);
-s1++;
-s2++;
+int i = 0;
+if (!str1 || !str2)
+return (-1);
+while (str1[i] && str2[i] && str1[i] == str2[i])
+i++;
+return (str1[i] - str2[i]);
 }
-if (*s1 == *s2)
-return (0);
-else
-return (*s1 < *s2 ? -1 : 1);
-}
+
+
 
 /**
  * _strcpy - copies the string pointed to by src,
@@ -85,15 +83,16 @@ return (dest);
 
 /**
  * _strlen - returns the length of a string
- * @s: pointer to the string
- * Return: the length of the string
+ * @s: the string whose length to check
+ *
+ * Return: integer length of string
  */
 int _strlen(char *s)
 {
 int i = 0;
-while (s[i])
+if (!s)
+return (0);
+while (*s++)
 i++;
 return (i);
 }
-
-

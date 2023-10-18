@@ -1,20 +1,6 @@
 #include "header.h"
 
 /**
- * getline_error - Calculates the error code for getline() function
- * @cmd_len: The length of the command string
- *
- * Return: The error code for getline() function
- */
-int getline_error(int cmd_len)
-{
-if (cmd_len == -1)
-{
-exit(1);
-}
-return (0);
-}
-/**
  * strdup_error - Calculates the error code for strdup() function
  * @cmd_copy: A copy of the command string
  *

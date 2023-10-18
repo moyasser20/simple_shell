@@ -18,7 +18,7 @@ char *_getCommandPath(char *command);
 char *cmdPathCat(char *token, char *command);
 
 /* string functions */
-int strcmp1(char *s1, char *s2);
+int strcmp1(char *str1, char *str2);
 char *_strcpy(char *dest, char *src);
 char *strdup_(const char *str);
 char *_strcat(char *dest, char *src);
@@ -26,7 +26,6 @@ int _strlen(char *s);
 
 
 /*errors*/
-int getline_error(int cmd_len);
 int strdup_error(char *cmd_copy);
 int mallocerror(char **argv);
 int forkError(void);

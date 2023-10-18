@@ -17,8 +17,8 @@ int i;
 cmdPath = _getCommandPath(argv[0]);
 if (cmdPath == NULL)
 {
-perror("cmdPath");
 multiFree(2, argv, cmd);
+free(cmd_copy);
 exit(0);
 }
 cmdPath_copy = strdup_(cmdPath);
