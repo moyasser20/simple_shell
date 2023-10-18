@@ -1,8 +1,3 @@
-/**
- * @file shell.h
- * @brief Header file for shell.c
- * @details Contains the function prototypes and global variables for shell.c
- */
 #ifndef SHELL_H
 #define SHELL_H
 /*Includes*/
@@ -43,11 +38,14 @@ char **getargv(int argc, char *cmd_copy, char *delim);
 /*free*/
 void multiFree(int n, ...);
 /*exit case*/
-void exitCase(char *cmd_copy, char **argv, char *cmdPath, char *cmdPath_copy, char *cmd);
+void exitCase(char *cmd_copy, char **argv, char *cmdPath
+, char *cmdPath_copy, char *cmd);
 /*env case*/
-void envCase(char *envp[], char *cmd_copy, char **argv, char *cmdPath, char *cmdPath_copy);
+void envCase(char *envp[], char *cmd_copy
+, char **argv, char *cmdPath, char *cmdPath_copy);
 /*chdir case*/
-void chdirCase(char **argv, char *cmd_copy, char *cmdPath, char *cmdPath_copy);
+void chdirCase(char **argv, char *cmd_copy
+, char *cmdPath, char *cmdPath_copy);
 /*child process*/
 void childProcess(char **argv, char *cmd, int argc, char *cmd_copy);
 /*struct for intializing variables*/
