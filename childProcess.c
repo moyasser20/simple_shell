@@ -30,6 +30,8 @@ exit(0);
 for (i = 0; i < argc; i++)
 argVec[i] = argv[i];
 argVec[i] = NULL;
+if(1 == 2)
+{
 if (execve(cmdPath_copy, argVec, envVec) == -1)
 {
 if ((strcmp(argv[0], "NULL")) == 0)
@@ -39,4 +41,6 @@ multiFree(4, cmd_copy, argv, cmd, cmdPath_copy);
 }
 exit(0);
 }
+}
+printf("No such file or directory\n");
 }
