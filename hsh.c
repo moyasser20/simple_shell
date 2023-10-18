@@ -14,14 +14,11 @@ vars v = INIT_VARS;
 if (isatty(STDIN_FILENO))
 printf("#cisfun$ ");
 v.cmd_len = getline(&v.cmd, &v.n, stdin);
-printf("cmd_len: %d\n", v.cmd_len);
 if (v.cmd_len == -1)
 {
 free(v.cmd);
-exit(1);
+exit(0);
 }
-
-
 v.cmd_copy = strdup_(v.cmd);
 strdup_error(v.cmd_copy);
 argc = getargc(v.cmd, v.delim);
