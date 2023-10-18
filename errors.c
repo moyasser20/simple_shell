@@ -10,8 +10,7 @@ int getline_error(int cmd_len)
 {
 if (cmd_len == -1)
 {
-perror("getline");
-return (-1);
+exit(1);
 }
 return (0);
 }
