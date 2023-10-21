@@ -22,4 +22,5 @@ cmdPath = _strcat(cmdPath, "/");
 cmdPath = _strcat(cmdPath, command);
 cmdPath = _strcat(cmdPath, "\0");
 return (cmdPath);
+free(cmdPath);
 }

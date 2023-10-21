@@ -1,10 +1,10 @@
 #include "header.h"
 
 /**
- * strdup_error - Calculates the error code for strdup() function
+ * strdup_error - Calculates the error code for strdup_() function
  * @cmd_copy: A copy of the command string
  *
- * Return: The error code for strdup() function
+ * Return: The error code for strdup_() function
  */
 int strdup_error(char *cmd_copy)
 {

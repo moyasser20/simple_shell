@@ -1,32 +1,38 @@
 #include "header.h"
 
 /**
- * strdup_ - sdfsd
- * @str: asdj
- * Return: dsfadsf
+ * strdup_ - duplicates a string
+ * @str: the string to duplicate
+ * Return: pointer to the new string
  */
-char *strdup_(const char *str)
+char *strdup_(char *str)
 {
-int length = 0;
-char *ret;
+char *dup;
+int i = 0, len = 0;
 if (str == NULL)
 return (NULL);
-while (*str++)
-length++;
-ret = malloc(sizeof(char) * (length + 1));
-if (!ret)
+while (str[len])
+len++;
+dup = malloc(sizeof(char) * (len + 1));
+if (dup == NULL)
 return (NULL);
-for (length++; length--;)
-ret[length] = *--str;
-return (ret);
+while (i < len)
+{
+dup[i] = str[i];
+i++;
+}
+dup[i] = '\0';
+return (dup);
+free(dup);
 }
 
 /**
- * _strcmp - performs lexicogarphic comparison of two strangs.
- * @s1: the first strang
- * @s2: the second strang
- *
- * Return: negative if s1 < s2, positive if s1 > s2, zero if s1 == s2
+ * strcmp1 - Compares two strings.
+ * @str1: The first string to compare.
+ * @str2: The second string to compare.
+ * Return: An integer less than, equal to,
+ * or greater than zero if str1 is found,
+ * respectively, to be less than, to match, or be greater than str2.
  */
 int strcmp1(char *str1, char *str2)
 {

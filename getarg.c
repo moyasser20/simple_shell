@@ -40,4 +40,5 @@ i++;
 }
 argv[i] = NULL;
 return (argv);
+free(argv);
 }
